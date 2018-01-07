@@ -87,6 +87,8 @@ public interface TransistorKeys {
     int PLAYBACK_STATE_LOADING_STATION = 1;
     int PLAYBACK_STATE_STARTED = 2;
     int PLAYBACK_STATE_STOPPED = 3;
+    int PLAYBACK_STATE_NEXT = 4;
+
 
     /* VIEW HOLDER */
     int HOLDER_UPDATE_NAME = 1;

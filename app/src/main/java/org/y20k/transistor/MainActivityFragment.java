@@ -92,6 +92,7 @@ public final class MainActivityFragment extends Fragment implements TransistorKe
     private TextView mPlayerStationName;
     private TextView mPlayerStationMetadata;
     private ImageButton mPlayerPlaybackButton;
+    private ImageButton mPlayerNextButton;
     private ImageButton mPlayerSheetSleepTimerButton;
     private ImageButton mPlayerSheetStationOptionsButton;
     private ImageButton mPlayerSheetMetadataCopyButton;
@@ -160,6 +161,7 @@ public final class MainActivityFragment extends Fragment implements TransistorKe
         mPlayerStationName = mRootView.findViewById(R.id.player_station_name);
         mPlayerStationMetadata = mRootView.findViewById(R.id.player_station_metadata);
         mPlayerPlaybackButton = mRootView.findViewById(R.id.player_playback_button);
+        mPlayerNextButton = mRootView.findViewById(R.id.player_nextstation_button);
         mPlayerSheet = mRootView.findViewById(R.id.player_sheet);
         mPlayerSheetSleepTimerButton = mRootView.findViewById(R.id.player_sheet_timer_button);
         mPlayerSheetStationOptionsButton = mRootView.findViewById(R.id.player_sheet_station_options_button);
@@ -403,6 +405,13 @@ public final class MainActivityFragment extends Fragment implements TransistorKe
             }
         });
 
+        mPlayerNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                togglePlayback(mCurrentStation, false);
+            }
+        });
+
         // expand player sheet
         mPlayerSheet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -555,6 +564,10 @@ public final class MainActivityFragment extends Fragment implements TransistorKe
                     mPlayerPlaybackButton.setImageResource(R.drawable.ic_stop_white_36dp);
                     break;
                 }
+                case PLAYBACK_STATE_NEXT: {
+                    mPlayerPlaybackButton.setImageResource(R.drawable.ic_play_arrow_white_36dp);
+                    break;
+                }
             }
         }
     }
@@ -578,6 +591,12 @@ public final class MainActivityFragment extends Fragment implements TransistorKe
                 }
                 case PLAYBACK_STATE_STARTED: {
                     setupStationPlaybackButtonState(station);
+                    break;
+                }
+                case PLAYBACK_STATE_NEXT: {
+                    Animation rotateCounterClockwise = AnimationUtils.loadAnimation(mActivity, R.anim.rotate_counterclockwise_fast);
+                    rotateCounterClockwise.setAnimationListener(createAnimationListener(station));
+                    mPlayerNextButton.startAnimation(rotateCounterClockwise);
                     break;
                 }
             }
